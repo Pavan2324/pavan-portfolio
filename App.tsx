@@ -289,7 +289,7 @@ const App: React.FC = () => {
       </section>
 
       {/* Achievements Banner */}
-      <section className="py-24 px-6 bg-indigo-600 relative overflow-hidden">
+      <section id="achievements" className="py-24 px-6 bg-indigo-600 relative overflow-hidden">
          <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-12 relative z-10">
             <div className="max-w-2xl text-white">
                <h2 className="text-4xl md:text-6xl font-black tracking-tighter mb-8 leading-[0.95]">

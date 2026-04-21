@@ -17,7 +17,7 @@ export const getGeminiResponse = async (userPrompt: string): Promise<string> => 
     const apiKey = process.env.GEMINI_API_KEY;
     
     if (!apiKey || apiKey === "your_api_key_here") {
-      return "⚠️ Setup Needed: The Gemini API key is missing. Please go to the app's 'Secrets' menu in AI Studio and ensure GEMINI_API_KEY is set to 'AI Studio Free Tier'.";
+      return "⚠️ Setup Needed: The Gemini API key is missing. If you are in AI Studio, add GEMINI_API_KEY to 'Secrets'. If you are on Vercel or another platform, add GEMINI_API_KEY to your Environment Variables.";
     }
 
     const ai = new GoogleGenAI({ apiKey });
@@ -41,9 +41,9 @@ export const getGeminiResponse = async (userPrompt: string): Promise<string> => 
     
     const errorMessage = error instanceof Error ? error.message : String(error);
     if (errorMessage.includes("API key not valid")) {
-      return "❌ The API key configured in Secrets is invalid. Please try re-applying the 'AI Studio Free Tier' secret in the Settings menu.";
+      return "❌ The API key is invalid. Please ensure GEMINI_API_KEY is correctly set in your deployment environment variables.";
     }
     
-    return "I'm having trouble reasoning about this right now. Please check your connection or ensure the Gemini API key is correctly configured in AI Studio.";
+    return "I'm having trouble reasoning about this right now. Please check your connection or ensure the Gemini API key is correctly configured in your environment.";
   }
 };
