@@ -1,5 +1,5 @@
 
-import { ExperienceItem, EducationItem, SkillGroup, ProjectItem, AchievementItem } from '../types';
+import { ExperienceItem, EducationItem, SkillGroup, ProjectItem, AchievementItem } from '../types.js';
 
 export const PERSONAL_INFO = {
   name: "Pavan Tiwari",

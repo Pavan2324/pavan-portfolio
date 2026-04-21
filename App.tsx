@@ -218,7 +218,6 @@ const App: React.FC = () => {
 
       {/* Projects Grid */}
       <section id="projects" className="py-32 px-6 bg-slate-900 text-white relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-full bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 mix-blend-overlay" />
         <div className="max-w-7xl mx-auto relative z-10">
            <div className="text-center mb-24">
             <h2 className="text-5xl md:text-6xl font-black mb-6 tracking-tighter">Tactical Solutions</h2>
@@ -291,7 +290,6 @@ const App: React.FC = () => {
 
       {/* Achievements Banner */}
       <section className="py-24 px-6 bg-indigo-600 relative overflow-hidden">
-         <div className="absolute top-0 right-0 w-full h-full bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay" />
          <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-12 relative z-10">
             <div className="max-w-2xl text-white">
                <h2 className="text-4xl md:text-6xl font-black tracking-tighter mb-8 leading-[0.95]">
@@ -320,7 +318,6 @@ const App: React.FC = () => {
       {/* Final CTA */}
       <section className="py-32 px-6 text-center bg-white">
         <div className="max-w-4xl mx-auto rounded-[5rem] overflow-hidden relative group">
-           <div className="absolute inset-0 bg-slate-900 p-1 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-100" />
            <div className="relative z-10 p-20 md:p-32 flex flex-col items-center">
               <h2 className="text-5xl md:text-7xl font-black text-white mb-10 tracking-tighter leading-none">
                 Let's Build <br /> 

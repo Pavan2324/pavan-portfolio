@@ -1,29 +1,49 @@
 
 
+import { GoogleGenAI } from "@google/genai";
+import { PERSONAL_INFO, EXPERIENCE, EDUCATION, SKILLS, PROJECTS, ACHIEVEMENTS } from "../constants";
+
+const resumeData = JSON.stringify({
+  personal: PERSONAL_INFO,
+  experience: EXPERIENCE,
+  education: EDUCATION,
+  skills: SKILLS,
+  projects: PROJECTS,
+  achievements: ACHIEVEMENTS
+});
+
 export const getGeminiResponse = async (userPrompt: string): Promise<string> => {
   try {
-    const response = await fetch("/api/chat", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        prompt: userPrompt,
-      }),
+    const apiKey = process.env.GEMINI_API_KEY;
+    
+    if (!apiKey || apiKey === "your_api_key_here") {
+      return "⚠️ Setup Needed: The Gemini API key is missing. Please go to the app's 'Secrets' menu in AI Studio and ensure GEMINI_API_KEY is set to 'AI Studio Free Tier'.";
+    }
+
+    const ai = new GoogleGenAI({ apiKey });
+    
+    const response = await ai.models.generateContent({
+      model: "gemini-3-flash-preview",
+      contents: userPrompt,
+      config: {
+        systemInstruction: `You are an AI assistant representing Pavan Tiwari, a professional Data Scientist. 
+        Your goal is to answer questions from potential recruiters or clients based on his resume data.
+        Be professional, concise, and helpful. Use the following resume data to answer:
+        ${resumeData}
+        
+        If a question is asked that isn't covered by the data, politely state that you represent Pavan and can only share details from his professional profile.`
+      }
     });
 
-    if (!response.ok) {
-      throw new Error("Server responded with an error");
-    }
-
-    const data = await response.json();
-    if (data.error) {
-      console.error("Gemini Server Error:", data.error);
-      return `I'm currently unable to connect to my AI core (Error: ${data.error}). Please ensure the GEMINI_API_KEY is correctly set in the environment variables.`;
-    }
-    return data.text || "I'm sorry, I couldn't generate a response right now. Please feel free to reach out to Pavan directly via email.";
+    return response.text || "I was unable to retrieve a response. Please try again later.";
   } catch (error) {
-    console.error("Gemini network error:", error);
-    return "I'm having a bit of trouble connecting to my brain! Please ensure the server is running and the API key is configured. You can also contact Pavan directly.";
+    console.error("Gemini AI Error:", error);
+    
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    if (errorMessage.includes("API key not valid")) {
+      return "❌ The API key configured in Secrets is invalid. Please try re-applying the 'AI Studio Free Tier' secret in the Settings menu.";
+    }
+    
+    return "I'm having trouble reasoning about this right now. Please check your connection or ensure the Gemini API key is correctly configured in AI Studio.";
   }
 };
