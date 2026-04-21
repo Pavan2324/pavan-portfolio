@@ -4,20 +4,19 @@ import { createServer as createViteServer } from "vite";
 import path from "path";
 import { fileURLToPath } from "url";
 import { GoogleGenAI } from "@google/genai";
-import { PERSONAL_INFO, EXPERIENCE, EDUCATION, SKILLS } from "./constants";
+import { PERSONAL_INFO, EXPERIENCE, EDUCATION, SKILLS, PROJECTS, ACHIEVEMENTS } from "./src/constants";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const resumeDataString = `
-Name: ${PERSONAL_INFO.name}
-Role: ${PERSONAL_INFO.title}
-Headline: ${PERSONAL_INFO.headline}
-Summary: ${PERSONAL_INFO.summary}
-Experience: ${EXPERIENCE.map(e => `${e.role} at ${e.company} (${e.period})`).join(', ')}
-Education: ${EDUCATION.map(e => `${e.degree} from ${e.institution} (${e.period})`).join(', ')}
-Skills: ${SKILLS.map(s => `${s.category}: ${s.skills.join(', ')}`).join('; ')}
-`;
+const resumeDataString = JSON.stringify({
+  personal: PERSONAL_INFO,
+  experience: EXPERIENCE,
+  education: EDUCATION,
+  skills: SKILLS,
+  projects: PROJECTS,
+  achievements: ACHIEVEMENTS
+});
 
 async function startServer() {
   const app = express();
