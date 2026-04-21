@@ -1,4 +1,5 @@
 
+import "dotenv/config";
 import express from "express";
 import { createServer as createViteServer } from "vite";
 import path from "path";
@@ -23,6 +24,11 @@ async function startServer() {
   const PORT = 3000;
 
   app.use(express.json());
+
+  // Health check
+  app.get("/api/health", (req, res) => {
+    res.json({ status: "ok", env: { GEMINI_API_KEY: !!process.env.GEMINI_API_KEY } });
+  });
 
   // API Route for Gemini - Securely handled on the server
   app.post("/api/chat", async (req, res) => {
@@ -74,6 +80,7 @@ async function startServer() {
 
   app.listen(PORT, "0.0.0.0", () => {
     console.log(`Server running on http://localhost:${PORT}`);
+    console.log(`GEMINI_API_KEY status: ${process.env.GEMINI_API_KEY ? 'CONFIGURED' : 'MISSING'}`);
   });
 }
 
