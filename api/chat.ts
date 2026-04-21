@@ -1,62 +1,89 @@
+import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { PERSONAL_INFO, EXPERIENCE, EDUCATION, SKILLS, PROJECTS, ACHIEVEMENTS } from "../constants";
 
-// NOTE: This file runs ONLY on Vercel's server. The GEMINI_API_KEY is never
-// sent to the browser. The client calls /api/chat and only receives text back.
+// ✅ Resume data is inlined — Vercel bundles api/ functions independently
+// so "../constants" imports fail at runtime. Inline avoids that entirely.
+const RESUME_CONTEXT = `
+Name: Pavan Tiwari
+Title: Applied AI Engineer | Senior Data Scientist
+Location: Navsari, GJ, India
+Email: tiwaripav9427@gmail.com
+LinkedIn: https://www.linkedin.com/in/pavan-tiwari-80a7b31a5/
+GitHub: https://github.com/Pavan2324
 
-const resumeDataString = JSON.stringify({
-  personal: PERSONAL_INFO,
-  experience: EXPERIENCE,
-  education: EDUCATION,
-  skills: SKILLS,
-  projects: PROJECTS,
-  achievements: ACHIEVEMENTS,
-});
+SUMMARY:
+Applied AI Engineer with 5+ years of experience building and deploying large-scale Machine Learning
+and Generative AI systems across manufacturing and finance domains. Delivered Rs.170 Cr business impact
+through high-frequency time-series forecasting systems and automated 10+ FTE workloads via intelligent
+ML pipelines. Designed enterprise-grade RAG-based LLM architectures for knowledge retrieval and
+decision support.
 
-export default async function handler(req: any, res: any) {
-  // Only allow POST
+EXPERIENCE:
+1. AM/NS India — Senior Data Scientist / Applied AI Engineer (Apr 2021 - Present, 5 years)
+   - Time series forecasting (XGBoost, ARIMA, LSTM) for power consumption prediction.
+     Reduced manual effort by 7 FTEs, contributed to Rs.170 Cr profit optimization in FY2025.
+   - Monthly liquidity forecasting solution — reduced manual effort by 3 FTEs.
+   - Semantic job-resume matching engine using sentence embeddings, TF-IDF, cosine similarity.
+   - Generative AI document intelligence system using LLMs and LangChain — reduced manual effort by ~60%.
+
+2. Techno Labs — Data Science Intern (Oct 2020 - Mar 2021)
+   - Data analysis and visualization with Python.
+   - Applied ML techniques and EDA for data-driven decision-making.
+
+EDUCATION:
+- PG Diploma in AI & ML — IIT Guwahati (2020-2021), CGPA: 7.92
+- B.Tech in CSE — Oriental University, Indore (2016-2020), CGPA: 8.1
+
+SKILLS:
+Technical: Python, SQL, XGBoost, LightGBM, Scikit-learn, LSTM, TensorFlow, ARIMA, Prophet,
+           spaCy, LangChain, LlamaIndex, RAG, Agentic AI, FAISS, Pinecone, MLOps, AWS
+Tools: Git, GitHub, Jupyter Notebook, VS Code, PyCharm, Crew AI, N8N Automation
+
+PROJECTS:
+1. Power Consumption Forecasting (XGBoost, LSTM, ARIMA) — Rs.170 Cr business impact.
+2. Surface Defect Detection System (CNN, TensorFlow) — 8 defect types, 75% accuracy.
+3. Generative AI Document Query System (LangChain, RAG) — enterprise natural language retrieval.
+
+ACHIEVEMENTS:
+- Business Excellence Award for Surface Defect Detection System.
+- Best Cost Saving Award for Power Forecasting (Rs.170 Cr optimization).
+`;
+
+export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  // ✅ FIX: AIChat.tsx sends { prompt }, so we read req.body.prompt
-  const { prompt } = req.body;
+  const { prompt } = req.body as { prompt?: string };
 
   if (!prompt || typeof prompt !== "string" || prompt.trim() === "") {
     return res.status(400).json({ error: "Missing or empty prompt." });
   }
 
-  // API key lives ONLY here — never exposed to the client
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
-    return res
-      .status(500)
-      .json({ error: "GEMINI_API_KEY is not configured on the server." });
+    return res.status(500).json({ error: "GEMINI_API_KEY is not configured on the server." });
   }
 
   try {
     const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({
       model: "gemini-1.5-flash",
-      systemInstruction: `You are an AI assistant representing Pavan Tiwari, a professional Applied AI Engineer and Senior Data Scientist.
-Your goal is to answer questions from potential recruiters or clients based on his resume data.
-Be professional, concise, and helpful. Use the following resume data to answer:
+      systemInstruction: `You are an AI assistant representing Pavan Tiwari, a professional Applied AI Engineer
+and Senior Data Scientist. Answer questions from potential recruiters or clients based ONLY on his resume data.
+Be professional, concise, and helpful. If a question is not covered by the resume data, politely say you can only
+share details from his professional profile and suggest contacting him directly via email.
 
-${resumeDataString}
-
-If a question is asked that isn't covered by the data, politely state that you represent Pavan and can only share details from his professional profile.
-Keep your responses focused on his technical expertise, business impact (like the ₹170 Cr impact), and specialized skills in ML and GenAI.`,
+RESUME DATA:
+${RESUME_CONTEXT}`,
     });
 
-    const result = await model.generateContent(prompt);
+    const result = await model.generateContent(prompt.trim());
     const text = result.response.text();
 
-    // ✅ Return 'text' field — matches what AIChat.tsx expects: data.text
     return res.status(200).json({ text });
   } catch (error: any) {
-    console.error("Gemini Server Error:", error);
-    return res
-      .status(500)
-      .json({ error: "Failed to generate response from AI server." });
+    console.error("Gemini API Error:", error?.message || error);
+    return res.status(500).json({ error: "Failed to generate AI response." });
   }
 }

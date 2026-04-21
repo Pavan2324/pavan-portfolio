@@ -1,31 +1,27 @@
 {
-  "name": "copy-of-pavan-tiwari-portfolio",
+  "name": "pavan-tiwari-portfolio",
   "private": true,
   "version": "0.0.0",
-  "type": "module",
   "scripts": {
-    "dev": "tsx server.ts",
+    "dev": "vite",
     "build": "vite build",
-    "start": "node server.ts",
+    "preview": "vite preview",
     "lint": "tsc --noEmit"
   },
   "dependencies": {
-    "@google/genai": "^1.34.0",
     "@google/generative-ai": "^0.24.1",
     "@tailwindcss/vite": "^4.2.3",
     "clsx": "^2.1.1",
-    "dotenv": "^17.4.2",
-    "express": "^5.2.1",
     "lucide-react": "^1.8.0",
     "motion": "^12.38.0",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "tailwind-merge": "^3.5.0",
-    "tailwindcss": "^4.2.3",
-    "tsx": "^4.21.0"
+    "tailwindcss": "^4.2.3"
   },
   "devDependencies": {
     "@types/node": "^22.14.0",
+    "@vercel/node": "^5.0.0",
     "@vitejs/plugin-react": "^5.0.0",
     "typescript": "~5.8.2",
     "vite": "^6.2.0"
