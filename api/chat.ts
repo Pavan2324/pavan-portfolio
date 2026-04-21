@@ -39,11 +39,16 @@ export default async function handler(req, res) {
     });
 
     const result = await model.generateContent(prompt);
-    const text = result.response.text();
+    const responseText = result.response.text();
     
-    return res.status(200).json({ text });
+    if (!responseText) {
+      throw new Error("Empty response from AI model");
+    }
+
+    return res.status(200).json({ text: responseText });
   } catch (error) {
-    console.error("Vercel API Error:", error);
-    return res.status(500).json({ error: "Internal Server Error" });
+    console.error("Vercel AI Error:", error);
+    const errorMessage = error instanceof Error ? error.message : "Internal Server Error";
+    return res.status(500).json({ error: errorMessage });
   }
 }
