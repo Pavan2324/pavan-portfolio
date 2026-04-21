@@ -1,5 +1,4 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
-import type { VercelRequest, VercelResponse } from "@vercel/node";
+const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 const RESUME_CONTEXT = `
 Name: Pavan Tiwari
@@ -46,12 +45,12 @@ ACHIEVEMENTS:
 - Best Cost Saving Award for Power Forecasting (Rs.170 Cr optimization).
 `;
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+module.exports = async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const { prompt } = req.body as { prompt?: string };
+  const { prompt } = req.body;
 
   if (!prompt || typeof prompt !== "string" || prompt.trim() === "") {
     return res.status(400).json({ error: "Missing or empty prompt." });
@@ -79,8 +78,8 @@ ${RESUME_CONTEXT}`,
     const text = result.response.text();
 
     return res.status(200).json({ text });
-  } catch (error: any) {
+  } catch (error) {
     console.error("Gemini API Error:", error?.message || error);
     return res.status(500).json({ error: "Failed to generate AI response." });
   }
-}
+};
