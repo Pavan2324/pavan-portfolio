@@ -46,7 +46,7 @@ const AIChat: React.FC = () => {
             initial={{ opacity: 0, y: 30, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 30, scale: 0.9 }}
-            className="bg-white rounded-[2rem] shadow-[0_20px_60px_-15px_rgba(79,70,229,0.3)] w-[calc(100vw-32px)] sm:w-[400px] max-h-[calc(100vh-40px)] sm:max-h-[calc(100vh-80px)] flex flex-col border border-slate-100 overflow-hidden"
+            className="bg-white rounded-[2rem] shadow-[0_20px_60px_-15px_rgba(79,70,229,0.3)] w-[calc(100vw-32px)] sm:w-[400px] max-h-[calc(100svh-40px)] sm:max-h-[calc(100vh-100px)] flex flex-col border border-slate-100 overflow-hidden"
           >
             {/* Header */}
             <div className="bg-indigo-600 p-5 sm:p-6 text-white flex justify-between items-center bg-gradient-to-r from-indigo-600 to-blue-600 shrink-0">
@@ -71,7 +71,7 @@ const AIChat: React.FC = () => {
             </div>
             
             {/* Messages Area */}
-            <div ref={scrollRef} className="flex-1 min-h-[200px] overflow-y-auto p-4 sm:p-6 space-y-4 bg-slate-50/50 scroll-smooth">
+            <div ref={scrollRef} className="flex-1 min-h-[150px] overflow-y-auto p-4 sm:p-6 space-y-4 bg-slate-50/50 scroll-smooth">
               {messages.map((msg, idx) => (
                 <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                   <div className={`max-w-[85%] rounded-[1.25rem] px-4 py-2.5 sm:px-5 sm:py-3 text-sm leading-relaxed ${
@@ -94,7 +94,7 @@ const AIChat: React.FC = () => {
             </div>
 
             {/* Input Area */}
-            <div className="p-4 sm:p-6 bg-white border-t border-slate-100 shrink-0">
+            <div className="p-4 sm:p-6 bg-white border-t border-slate-100 shrink-0 mb-safe pb-6 sm:pb-8">
               <div className="relative flex items-center gap-2">
                 <input 
                   type="text" 
