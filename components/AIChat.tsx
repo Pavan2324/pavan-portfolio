@@ -39,17 +39,17 @@ const AIChat: React.FC = () => {
   };
 
   return (
-    <div className="fixed bottom-8 right-8 z-[60]">
+    <div className="fixed bottom-6 right-6 z-[60]">
       <AnimatePresence>
         {isOpen ? (
           <motion.div 
-            initial={{ opacity: 0, y: 100, scale: 0.9 }}
+            initial={{ opacity: 0, y: 30, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 100, scale: 0.9 }}
-            className="bg-white rounded-[2rem] shadow-[0_20px_60px_-15px_rgba(79,70,229,0.3)] w-80 sm:w-[400px] flex flex-col border border-slate-100 overflow-hidden"
+            exit={{ opacity: 0, y: 30, scale: 0.9 }}
+            className="bg-white rounded-[2rem] shadow-[0_20px_60px_-15px_rgba(79,70,229,0.3)] w-80 sm:w-[400px] max-h-[calc(100vh-60px)] flex flex-col border border-slate-100 overflow-hidden"
           >
             {/* Header */}
-            <div className="bg-indigo-600 p-6 text-white flex justify-between items-center bg-gradient-to-r from-indigo-600 to-blue-600">
+            <div className="bg-indigo-600 p-6 text-white flex justify-between items-center bg-gradient-to-r from-indigo-600 to-blue-600 shrink-0">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
                   <Sparkles className="w-5 h-5 text-white" />
@@ -71,7 +71,7 @@ const AIChat: React.FC = () => {
             </div>
             
             {/* Messages Area */}
-            <div ref={scrollRef} className="h-[450px] overflow-y-auto p-6 space-y-4 bg-slate-50/50 scroll-smooth">
+            <div ref={scrollRef} className="flex-1 min-h-[300px] overflow-y-auto p-6 space-y-4 bg-slate-50/50 scroll-smooth">
               {messages.map((msg, idx) => (
                 <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                   <div className={`max-w-[85%] rounded-[1.25rem] px-5 py-3 text-sm leading-relaxed ${
@@ -94,7 +94,7 @@ const AIChat: React.FC = () => {
             </div>
 
             {/* Input Area */}
-            <div className="p-6 bg-white border-t border-slate-100">
+            <div className="p-6 bg-white border-t border-slate-100 shrink-0 mb-safe">
               <div className="relative flex items-center gap-2">
                 <input 
                   type="text" 
