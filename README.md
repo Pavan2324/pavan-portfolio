@@ -6,7 +6,7 @@
 ![Experience](https://img.shields.io/badge/Experience-5%2B%20Years-0EA5E9?style=for-the-badge)
 ![Impact](https://img.shields.io/badge/Business%20Impact-₹170%20Cr-10B981?style=for-the-badge)
 
-**Live Portfolio → [pavan-portfolio.vercel.app](https://pavan-portfolio.vercel.app)**
+**Live Portfolio → [pavan-portfolio.vercel.app](https://pavan-portfolio-peach.vercel.app/)**
 
 </div>
 
